@@ -16,14 +16,17 @@
 
 package com.example.android.xrfundamentals
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.android.xrfundamentals.ui.component.PrimaryCard
@@ -31,6 +34,14 @@ import com.example.android.xrfundamentals.ui.component.SecondaryCardList
 import com.example.android.xrfundamentals.ui.component.XRFundamentalsTopAppBar
 import com.example.android.xrfundamentals.ui.layout.CompactLayout
 import com.example.android.xrfundamentals.ui.layout.ExpandedLayout
+import androidx.xr.compose.spatial.Subspace
+import androidx.xr.compose.subspace.SpatialPanel
+import androidx.xr.compose.subspace.SpatialRow
+import androidx.xr.compose.subspace.layout.SubspaceModifier
+import androidx.xr.compose.subspace.layout.height
+import androidx.xr.compose.subspace.layout.movable
+import androidx.xr.compose.subspace.layout.resizable
+import androidx.xr.compose.subspace.layout.width
 
 @Composable
 fun XRFundamentalsApp(
@@ -68,6 +79,47 @@ fun XRFundamentalsApp(
                     )
                 }
             )
+        }
+    }
+    Subspace {
+        SpatialRow(
+            curveRadius = 1225.dp
+        )
+        {
+            SpatialPanel(
+                modifier = SubspaceModifier
+                    .width(1024.dp)
+                    .height(800.dp)
+                    .resizable(true)
+                    .movable(true)
+            ) {
+                Scaffold(
+                    topBar = { XRFundamentalsTopAppBar() }
+                ) { innerPadding ->
+                    Box(Modifier.padding(innerPadding)) {
+                        PrimaryCard(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .verticalScroll(rememberScrollState())
+                        )
+                    }
+                }
+            }
+            SpatialPanel(
+                modifier = SubspaceModifier
+                    .width(340.dp)
+                    .height(800.dp)
+                    .resizable(true)
+                    .movable(true)
+            ) {
+                Surface {
+                    SecondaryCardList(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .verticalScroll(rememberScrollState())
+                    )
+                }
+            }
         }
     }
 }
